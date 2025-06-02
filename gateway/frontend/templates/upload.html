@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Upload Photo</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="file" name="image" class="form-control mb-2">
+  <input type="text" name="caption" placeholder="Caption" class="form-control mb-2">
+  <button class="btn btn-primary w-100">Upload</button>
+</form>
+{% endblock %}
