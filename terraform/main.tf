@@ -18,3 +18,16 @@ resource "google_compute_instance" "app_instance" {
 
   tags = ["http-server"]
 }
+
+resource "google_compute_firewall" "default" {
+  name    = "allow-http-ports"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8000", "8001", "8002", "8003", "8005"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["http-server"]
+}
