@@ -37,7 +37,8 @@ def get_posts(request):
             'id': post.id,
             'username': post.username,
             'caption': post.caption,
-            'image_url': f'http://gateway:8000{post.image.url}',
+            # 'image_url': f'http://gateway:8000{post.image.url}',
+            'image_url': post.image_url,
             'created_at': post.created_at.isoformat(),
         })
 
