@@ -5,35 +5,74 @@ services:
     build: ./gateway
     ports:
       - "8000:8000"
+    environment:
+      - USERS_SERVICE_URL=http://users:8001  # User Service (M2)
+      - POSTS_SERVICE_URL=http://posts:8002  # Post Service (M2)
+      - WRITE_SERVICE_URL=http://write:8003  # Write Service (M2)
+      - COMMENTS_SERVICE_URL=http://comments:8005  # Handle comments/likes
+      - MEDIA_ROOT=/app/media  # Shared volume for images
     depends_on:
       - users
       - posts
       - write
+      - comments
     volumes:
-      - ./media:/app/media
+      - ./media:/app/media  # Image uploads
 
   users:
     build: ./users
     ports:
       - "8001:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=instagramdb
+      - DB_USER=instagramuser
+      - DB_PASSWORD=${DB_PASSWORD}  # From .env
+      - SECRET_KEY=${SECRET_KEY}   # Django secret key
 
   posts:
     build: ./posts
     ports:
       - "8002:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=instagramdb
+      - DB_USER=instagramuser
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./media:/app/media
+      - ./media:/app/media  # Access uploaded images
 
   write:
     build: ./write
     ports:
       - "8003:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=instagramdb
+      - DB_USER=instagramuser
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./media:/app/media
+      - ./media:/app/media  # Store uploaded images
 
   comments:
     build: ./comments
     ports:
       - "8005:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=instagramdb
+      - DB_USER=instagramuser
+      - DB_PASSWORD=${DB_PASSWORD}
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: instagramdb
+      POSTGRES_USER: instagramuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./comments:/app
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  media:
