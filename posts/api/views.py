@@ -24,7 +24,7 @@ def create_post(request):
             "id": post.id,
             "username": post.username,
             "caption": post.caption,
-            "image_url": post.image.url,
+            "image_url": request.build_absolute_uri(post.image.url),  # Fixed this line
             "created_at": post.created_at.isoformat(),
         })
 
@@ -37,9 +37,7 @@ def get_posts(request):
             'id': post.id,
             'username': post.username,
             'caption': post.caption,
-            # 'image_url': f'http://gateway:8000{post.image.url}',
-            # 'image_url': post.image_url,
-            'image_url': post.image,
+            'image_url': request.build_absolute_uri(post.image.url) if post.image else None,
             'created_at': post.created_at.isoformat(),
         })
 
