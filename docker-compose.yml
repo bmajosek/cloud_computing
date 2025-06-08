@@ -5,6 +5,7 @@ services:
     build: ./gateway
     ports:
       - "8000:8000"
+    env_file: .env
     depends_on:
       - users
       - posts
@@ -16,6 +17,7 @@ services:
     build: ./users
     ports:
       - "8001:8000"
+    env_file: .env
 
   posts:
     build: ./posts
@@ -23,6 +25,7 @@ services:
       - "8002:8000"
     volumes:
       - ./media:/app/media
+    env_file: .env
 
   write:
     build: ./write
@@ -30,6 +33,7 @@ services:
       - "8003:8000"
     volumes:
       - ./media:/app/media
+    env_file: .env
 
   comments:
     build: ./comments
@@ -37,3 +41,4 @@ services:
       - "8005:8000"
     volumes:
       - ./comments:/app
+    env_file: .env

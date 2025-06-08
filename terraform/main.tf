@@ -113,7 +113,7 @@ resource "google_compute_instance" "app_instance" {
     access_config {}  # Optional: allows external internet access
   }
 
-  metadata_startup_script = file("startup.sh")
+  # metadata_startup_script = file("startup.sh")
 
   tags = ["http-server"]
 
@@ -124,8 +124,24 @@ resource "google_compute_instance" "app_instance" {
 
   depends_on = [
     google_project_service.required_apis,
-    google_compute_subnetwork.subnet
+    google_compute_subnetwork.subnet,
+    google_sql_database_instance.default,
+    google_sql_user.django_user
   ]
+
+  metadata = {
+    CLOUDSQL_PRIVATE_IP = google_sql_database_instance.default.private_ip_address
+    DB_NAME             = var.db_name
+    DB_USER             = var.db_user
+    DB_PASSWORD         = var.db_password
+  }
+
+  metadata_startup_script = templatefile("startup.sh", {
+    cloudsql_private_ip = google_sql_database_instance.default.private_ip_address
+    db_name            = var.db_name
+    db_user            = var.db_user
+    db_password        = var.db_password
+  })
 }
 
 # ------------------------------
