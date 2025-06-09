@@ -16,6 +16,7 @@ DB_HOST=${cloudsql_private_ip}
 DB_NAME=${db_name}
 DB_USER=${db_user}
 DB_PASSWORD=${db_password}
+INSTANCE_IP=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip")
 EOF
 
 # Verify the file was created

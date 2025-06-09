@@ -1,8 +1,10 @@
-# posts/api/views.py
-
+import os
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import Post
+
+INSTANCE_IP = os.environ.get("INSTANCE_IP", "localhost")  # Fallback if not set
+BASE_URL = f"http://{INSTANCE_IP}:8000"
 
 @csrf_exempt
 def create_post(request):
@@ -24,7 +26,7 @@ def create_post(request):
             "id": post.id,
             "username": post.username,
             "caption": post.caption,
-            "image_url": request.build_absolute_uri(post.image.url),  # Fixed this line
+            "image_url": f"{BASE_URL}{post.image.url}",
             "created_at": post.created_at.isoformat(),
         })
 
@@ -37,7 +39,7 @@ def get_posts(request):
             'id': post.id,
             'username': post.username,
             'caption': post.caption,
-            'image_url': request.build_absolute_uri(post.image.url) if post.image else None,
+            'image_url': f"{BASE_URL}{post.image.url}" if post.image else None,
             'created_at': post.created_at.isoformat(),
         })
 
