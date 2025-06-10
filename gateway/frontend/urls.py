@@ -5,7 +5,7 @@ from .comment import post_comment
 
 urlpatterns = [
     path('', feed),
-    path('comment/<int:post_id>/', views.post_comment, name='comment'),
+    path('comment/<int:post_id>/', post_comment, name='comment'),
     path('login/', views.login_view),
     path('register/', views.register_view),
     path('upload/', views.upload),

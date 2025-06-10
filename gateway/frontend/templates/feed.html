@@ -19,7 +19,7 @@
             {% if post.comments %}
               <ul class="list-unstyled">
                 {% for comment in post.comments %}
-                  <li>💬 <b> {{ comment.author }}</b> {{ comment.text }}</li>
+                  <li>💬 <b> {{ comment.author }}</b> {{ comment.content }}</li>
                 {% endfor %}
               </ul>
             {% else %}

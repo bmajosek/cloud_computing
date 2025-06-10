@@ -10,6 +10,7 @@ def post_comment(request, post_id):
         content = request.POST.get('content')
         if content:
             requests.post(f'{COMMENTS_URL}{post_id}/', data={
+                'post_id': post_id,
                 'author': request.user.username,
                 'content': content
             })
