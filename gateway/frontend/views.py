@@ -78,10 +78,10 @@ def post_comment(request, post_id):
     if request.method == "POST":
         comment = request.POST.get("comment")
         if comment:
-            requests.post("http://comments:8000/api/comments/", data={
+            requests.post(f'{COMMENTS_URL}{post_id}/', data={
                 "post_id": post_id,
-                "text": comment,
-                "username": request.session["username"]  
+                "content": comment,
+                "author": request.session["username"]  
             })
     return redirect("/")
 
