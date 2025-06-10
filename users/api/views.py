@@ -22,7 +22,7 @@ class RegisterView(APIView):
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response({'error': e.messages}, status=400)
+            return Response({'error': "\n".join(e.messages)}, status=400)
 
         # Create user if valid
         User.objects.create_user(username=username, password=password)
